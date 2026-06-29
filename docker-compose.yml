@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  database:
+    image: postgres:15-alpine
+    container_name: collabcode-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: collabcode
+      POSTGRES_USER: collabuser
+      POSTGRES_PASSWORD: collabpassword
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  redis:
+    image: redis:7-alpine
+    container_name: collabcode-redis
+    ports:
+      - "6379:6379"
+    restart: always
+
+  api:
+    build:
+      context: .
+      dockerfile: ./apps/api/Dockerfile
+    container_name: collabcode-api
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - DATABASE_URL=postgresql://collabuser:collabpassword@database:5432/collabcode?schema=public
+      - JWT_SECRET=super_secret_jwt_key_production_123!
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - database
+      - redis
+    restart: always
+
+  websocket:
+    build:
+      context: .
+      dockerfile: ./apps/websocket/Dockerfile
+    container_name: collabcode-websocket
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=production
+      - PORT=3002
+      - DATABASE_URL=postgresql://collabuser:collabpassword@database:5432/collabcode?schema=public
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - database
+      - redis
+    restart: always
+
+  web:
+    build:
+      context: .
+      dockerfile: ./apps/web/Dockerfile
+    container_name: collabcode-web
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+      - websocket
+    restart: always
+
+volumes:
+  postgres_data:

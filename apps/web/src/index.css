@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-aurora-bg text-slate-200 font-sans;
+  }
+}
+
+/* Webkit scrollbar stylings for Aurora Slate */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0B0F14;
+}
+::-webkit-scrollbar-thumb {
+  background: #20293A;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3B82F6;
+}
+
+/* Yjs Collaborative Remote Selection/Cursor Layouts */
+.yRemoteSelection {
+  background-color: rgba(59, 130, 246, 0.25);
+}
+.yRemoteSelectionHead {
+  position: absolute;
+  box-sizing: border-box;
+  border-left: 2px solid currentColor;
+  height: 100%;
+}
+.yRemoteSelectionHead::after {
+  position: absolute;
+  content: attr(data-username);
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 9px;
+  color: #0b0f14;
+  padding: 0.5px 4px;
+  border-radius: 3px;
+  background-color: currentColor;
+  white-space: nowrap;
+  top: -14px;
+  left: -2px;
+  z-index: 10;
+  pointer-events: none;
+}
