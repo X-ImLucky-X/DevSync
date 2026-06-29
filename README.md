@@ -9,7 +9,7 @@
 ---
 
 ## 🔗 Live Application
-🌐 **Live Demo URL:** [https://devsync.vercel.app](https://dev-sync-web-tau.vercel.app/)
+🌐 **Live Demo URL:** [https://dev-sync-web-tau.vercel.app](https://dev-sync-web-tau.vercel.app/)
 
 ---
 
