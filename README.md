@@ -34,6 +34,21 @@
 
 ---
 
+## 🔮 Roadmap & Future Features
+
+We are actively working on expanding DevSync's capabilities. Here are the features planned for upcoming releases:
+
+- [ ] **Multi-File Workspace (Files & Folders Support)**
+  - Add a workspace file explorer sidebar to create, rename, delete, and switch between multiple files and folders in the same room.
+- [ ] **AI-Powered Programming Assistant**
+  - Integrate an inline AI assistant for real-time code autocomplete suggestions, syntax error explanations, code refactoring, and code generation.
+- [ ] **Integrated Peer-to-Peer Calls**
+  - Add WebRTC audio and video conferencing in the room sidebar to talk while pairing.
+- [ ] **Canvas Template Exports**
+  - Export whiteboard drawings as clean SVGs or PNG files, or save custom elements as templates.
+
+---
+
 ## 🛠️ Tech Stack
 
 | Layer | Technologies |
