@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Terminal, Code, Users, Zap, ArrowRight, Play, X, Lock, Github, Sparkles } from 'lucide-react';
+import { API_URL } from '../config';
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -331,7 +332,7 @@ const LandingPage = () => {
     setIsCreating(true);
     const body = customOptions || { language: 'javascript', theme: 'vs-dark' };
     try {
-      const response = await fetch('http://localhost:3002/api/rooms', {
+      const response = await fetch(`${API_URL}/api/rooms`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)

@@ -11,6 +11,7 @@ import { WebsocketProvider } from 'y-websocket';
 import { MonacoBinding } from 'y-monaco';
 import { ClientEvent, ServerEvent } from '@collabcode/protocol';
 import { Canvas } from '../components/Canvas';
+import { API_URL, WS_URL } from '../config';
 
 interface UserPresence {
   id: string;
@@ -167,8 +168,8 @@ const Workspace = () => {
   const ydocRef = useRef<any>(null);
   const chatBottomRef = useRef<HTMLDivElement>(null);
   const controlSocketRef = useRef<WebSocket | null>(null);
-  const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const awarenessTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const idleTimerRef = useRef<any | null>(null);
+  const awarenessTimerRef = useRef<any | null>(null);
 
   const currentUserId = sessionStorage.getItem('cc_user_id');
   const localUserObj = users.find(u => u.id === currentUserId);
@@ -178,7 +179,7 @@ const Workspace = () => {
   useEffect(() => {
     if (!roomId) return;
     const userId = sessionStorage.getItem('cc_user_id') || '';
-    fetch(`http://localhost:3002/api/rooms/${roomId.toUpperCase()}?userId=${userId}`)
+    fetch(`${API_URL}/api/rooms/${roomId.toUpperCase()}?userId=${userId}`)
       .then(async res => {
         if (!res.ok) {
           if (res.status === 403) {
@@ -213,7 +214,7 @@ const Workspace = () => {
     }
 
     // Connect custom JSON Control and Yjs WebSockets (both bind to the same server endpoint)
-    const wsUrl = `ws://localhost:3002/room/${roomId.toUpperCase()}?userId=${userId}&username=${encodeURIComponent(username)}&color=${encodeURIComponent(userColor)}`;
+    const wsUrl = `${WS_URL}/room/${roomId.toUpperCase()}?userId=${userId}&username=${encodeURIComponent(username)}&color=${encodeURIComponent(userColor)}`;
     const ws = new WebSocket(wsUrl);
     controlSocketRef.current = ws;
 
@@ -221,7 +222,7 @@ const Workspace = () => {
     const ydoc = new Y.Doc();
     ydocRef.current = ydoc;
 
-    const yjsUrl = `ws://localhost:3002/sync/${roomId.toUpperCase()}`;
+    const yjsUrl = `${WS_URL}/sync/${roomId.toUpperCase()}`;
     const provider = new WebsocketProvider(yjsUrl, roomId.toUpperCase(), ydoc, {
       params: { userId }
     });
@@ -465,7 +466,7 @@ const Workspace = () => {
 
     if (roomDetails?.passwordRequired) {
       try {
-        const res = await fetch(`http://localhost:3002/api/rooms/${roomId?.toUpperCase()}/verify-password`, {
+        const res = await fetch(`${API_URL}/api/rooms/${roomId?.toUpperCase()}/verify-password`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ password: passwordInput })
